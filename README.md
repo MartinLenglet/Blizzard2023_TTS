@@ -41,7 +41,7 @@ For French multi-speaker TTS, run
 ```
 python3 synthesize.py --text "YOUR_DESIRED_TEXT"  --speaker_id SPEAKER_ID --restore_step 600000 --mode single -p config/Blizzard2023/preprocess.yaml -m config/Blizzard2023/model.yaml -t config/Blizzard2023/train.yaml
 ```
-SPEAKER\_ID = 1 for NEB, SPEAKER\_ID = 0 for AD
+SPEAKER\_ID = 1 for NEB, SPEAKER\_ID = 0 for AD.
 The generated utterances will be put in ``output/audio/``.
 
 ## Batch Inference
