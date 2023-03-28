@@ -35,22 +35,22 @@ This implementation does not require any additional dependencies compared to [mi
 
 ## Inference
 
-You have to download the pretrained model and configuration files from this [Google Drive](). Put the pre-trained model in ``output/ckpt/Blizzard2023_Hub/`` and the config files at the root of this repository.
+You have to download the pretrained model and configuration files from this [Google Drive](https://drive.google.com/drive/folders/1B_tk38MxqukwvTCaWyD8PgfDLDAEqiNI?usp=sharing). Download and put both folders at the root of this repository. Update path in configuration files with your own path. This Google Drive also includes examples of train and validation files in ``preprocessed_data/Blizzard2023/``.
 
 For French multi-speaker TTS, run
 ```
-python3 synthesize.py --text "YOUR_DESIRED_TEXT"  --speaker_id SPEAKER_ID --restore_step 600000 --mode single -p config/Blizzard2023/preprocess_Blizzard2023.yaml -m config/Blizzard2023/model_Blizzard2023_Hub.yaml -t config/Blizzard2023/train_Blizzard2023_Hub.yaml
+python3 synthesize.py --text "YOUR_DESIRED_TEXT"  --speaker_id SPEAKER_ID --restore_step 600000 --mode single -p config/Blizzard2023/preprocess.yaml -m config/Blizzard2023/model.yaml -t config/Blizzard2023/train.yaml
 ```
-SPEAKER\_ID = ? for NEB, SPEAKER\_ID = ? for AD
+SPEAKER\_ID = 1 for NEB, SPEAKER\_ID = 0 for AD
 The generated utterances will be put in ``output/audio/``.
 
 ## Batch Inference
 Batch inference is also supported, try
 
 ```
-python3 synthesize.py --source preprocessed_data/Blizzard2023/NEB_text.txt --restore_step 600000 --mode single -p config/Blizzard2023/preprocess_Blizzard2023.yaml -m config/Blizzard2023/model_Blizzard2023_Hub.yaml -t config/Blizzard2023/train_Blizzard2023_Hub.yaml
+python3 synthesize.py --source preprocessed_data/Blizzard2023/val_NEB.txt --restore_step 600000 --mode single -p config/Blizzard2023/preprocess.yaml -m config/Blizzard2023/model.yaml -t config/Blizzard2023/train.yaml
 ```
-to synthesize all utterances in ``preprocessed_data/Blizzard2023/NEB_text.txt``
+to synthesize all utterances in ``preprocessed_data/Blizzard2023/val_NEB.txt``
 
 ## Controllability
 The pitch/volume/speaking rate of the synthesized utterances can be controlled by specifying the desired pitch/energy/duration biais. Pitch (resp. Energy) control value is additive and specified in Semitones (resp. dB). Duration is controlled with a ratio.
@@ -66,22 +66,23 @@ The [Blizzard2023](https://www.synsig.org/index.php/Blizzard_Challenge_2023#Test
  
 First, run 
 ```
-python3 prepare_align.py config/Blizzard2023/preprocess_Blizzard2023.yaml
+python3 prepare_align.py config/Blizzard2023/preprocess.yaml
 ```
 to create audio samples by utterance from the audio samples by chapter given in the dataset.
 
-Then generate TextGrid by utterance from the .csv given.
-You have to unzip the files in ``preprocessed_data/Blizzard2023/TextGrid/``.
+Then generate TextGrid by utterance from the .csv given. ``compute_TextGrid_by_utt.m`` is a Matlab script which generates TextGrid files by utterance from Ground-Truth durations given in the CSV file.
+Put the files in ``preprocessed_data/Blizzard2023/TextGrid/`` (One folder by speaker).
 
 After that, run the preprocessing script by
 ```
-python3 preprocess.py config/Blizzard2023/preprocess_Blizzard2023.yaml
+python3 preprocess.py config/Blizzard2023/preprocess.yaml
 ```
 to compute mel, pitch, energy and duration by phoneme, saved as one .npy file by utterance.
 
 ## Training
 
+Create your train and validation files, or used the files shared in this [Google Drive](https://drive.google.com/drive/folders/1B_tk38MxqukwvTCaWyD8PgfDLDAEqiNI?usp=sharing). Copy the ``preprocessed_data`` folder at the root of this repository.
 Train your model with
 ```
-python3 train.py -p config/Blizzard2023/preprocess_Blizzard2023.yaml -m config/Blizzard2023/model_Blizzard2023_Hub.yaml -t config/Blizzard2023/train_Blizzard2023_Hub.yaml
+python3 train.py -p config/Blizzard2023/preprocess.yaml -m config/Blizzard2023/model.yaml -t config/Blizzard2023/train.yaml
 ```
