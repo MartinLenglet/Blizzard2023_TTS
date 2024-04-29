@@ -29,7 +29,7 @@ This implementation is not intended to be trained jointly with a neural vocoder.
 ## Dependencies
 You can install the Python dependencies with
 ```
-pip3 install -r requirements.txt
+pip3 install -r requirements_3-10.txt
 ```
 This implementation does not require any additional dependencies compared to [ming024'implementation](https://github.com/ming024/FastSpeech2).
 
@@ -55,6 +55,9 @@ to synthesize all utterances in ``preprocessed_data/Blizzard2023/val_NEB.txt``
 ## Controllability
 The pitch/volume/speaking rate of the synthesized utterances can be controlled by specifying the desired pitch/energy/duration biais. Pitch (resp. Energy) control value is additive and specified in Semitones (resp. dB). Duration is controlled with a ratio.
 For example, one can increase the speaking rate by 20 % with the argument ``--duration_control 0.8``, or decrease the pitch by 2 semitones with the argument ``--pitch_control -2.0``.
+
+## Vocoder
+Refer to the [Waveglow repository](https://github.com/MartinLenglet/Waveglow_GPU) to use our vocoder.
 
 # Training
 
